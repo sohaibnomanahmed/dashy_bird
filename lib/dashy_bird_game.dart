@@ -1,7 +1,9 @@
 import 'dart:math';
 
+import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:viking_bird/components/background.dart';
 import 'package:viking_bird/components/candy.dart';
 import 'package:viking_bird/components/obstacle.dart';
@@ -11,7 +13,7 @@ import 'components/player.dart';
 import 'game_state.dart';
 
 class DashyBirdGame extends FlameGame
-    with SingleGameInstance, TapDetector, HasCollisionDetection {
+    with SingleGameInstance, TapDetector, HasCollisionDetection, KeyboardHandler {
   Player? player;
   var scoreText = ScoreTextBox('Score: 0');
   double boost = 1;
@@ -33,6 +35,7 @@ class DashyBirdGame extends FlameGame
     if (score > 19) {
       setGameState(GameState.win);
       overlays.add("PauseMenu");
+      FlameAudio.bgm.pause();
     }
     candy = Candy(increaseScore,
         getGameState); // Its already in the component tree just reset i think, therefore no need to re add it, that will create two candies
@@ -58,6 +61,7 @@ class DashyBirdGame extends FlameGame
     ]);
 
     add(scoreText);
+    FlameAudio.bgm.play('yurek.mp3');
   }
 
   void reset() {
@@ -113,4 +117,6 @@ class DashyBirdGame extends FlameGame
     super.onTapDown(info);
     player?.jump();
   }
+
+  
 }
