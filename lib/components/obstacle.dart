@@ -40,7 +40,12 @@ class Obstacle extends SpriteComponent with HasGameRef, CollisionCallbacks {
   void update(double dt) {
     super.update(dt);
     if (getGameState() == GameState.active) {
-      position.x -= dt * 50 * boost;
+      final acc = dt * 50 * boost;
+      if (acc > 20){
+        position.x -= 20;
+      } else {
+        position.x -= dt * 50 * boost;
+      }
     }
   }
 
