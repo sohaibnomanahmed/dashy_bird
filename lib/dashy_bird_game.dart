@@ -13,7 +13,12 @@ import 'components/player.dart';
 import 'game_state.dart';
 
 class DashyBirdGame extends FlameGame
-    with SingleGameInstance, TapDetector, HasCollisionDetection, KeyboardHandler {
+    with
+        SingleGameInstance,
+        TapDetector,
+        HasCollisionDetection,
+        KeyboardHandler {
+          
   Player? player;
   var scoreText = ScoreTextBox('Score: 0');
   double boost = 1;
@@ -35,7 +40,7 @@ class DashyBirdGame extends FlameGame
     if (score > 19) {
       setGameState(GameState.win);
       overlays.add("PauseMenu");
-      FlameAudio.bgm.pause();
+      //FlameAudio.bgm.pause();
     }
     candy = Candy(increaseScore,
         getGameState); // Its already in the component tree just reset i think, therefore no need to re add it, that will create two candies
@@ -43,7 +48,7 @@ class DashyBirdGame extends FlameGame
 
   @override
   Future<void> onLoad() async {
-    scoreText.position = Vector2(30, 30);
+    scoreText.position = Vector2(30, 50);
     candy = Candy(increaseScore, getGameState);
     obstacle = Obstacle(
       scaleFactor: size.y / 2,
@@ -70,7 +75,7 @@ class DashyBirdGame extends FlameGame
     boost = 1;
 
     scoreText = ScoreTextBox('Score: 0');
-    scoreText.position = Vector2(30, 30);
+    scoreText.position = Vector2(30, 50);
     candy = Candy(increaseScore, getGameState);
     obstacle = Obstacle(
       scaleFactor: size.y / 2,
@@ -88,6 +93,7 @@ class DashyBirdGame extends FlameGame
     ]);
 
     add(scoreText);
+    FlameAudio.bgm.play('yurek.mp3');
   }
 
   @override
@@ -101,7 +107,8 @@ class DashyBirdGame extends FlameGame
 
     // add more obstacles
     if (obstacle != null && obstacle!.position.x < size.x / 100) {
-      double scale = ((Random().nextInt((size.y - 300).toInt()) + 100))..toDouble();
+      double scale = ((Random().nextInt((size.y - 300).toInt()) + 100))
+        ..toDouble();
       obstacle = Obstacle(
           scaleFactor: scale,
           boost: boost,
@@ -117,6 +124,4 @@ class DashyBirdGame extends FlameGame
     super.onTapDown(info);
     player?.jump();
   }
-
-  
 }
